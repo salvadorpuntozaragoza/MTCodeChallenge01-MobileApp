@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "976779041331",
+    "firebase_url": "https://flutter-various-app.firebaseio.com",
+    "project_id": "flutter-various-app",
+    "storage_bucket": "flutter-various-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976779041331:android:fdbe1f5af0bc878ca32146",
+        "android_client_info": {
+          "package_name": "com.example.form_validation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976779041331-8cb9me1rin7emes3umjk5a3ijflcjite.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2htmi2YG_lCoYq1hAWJQF_VYhqglicoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976779041331-8cb9me1rin7emes3umjk5a3ijflcjite.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976779041331:android:db684b6f56a82865a32146",
+        "android_client_info": {
+          "package_name": "com.scrumpokeronline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976779041331-8cb9me1rin7emes3umjk5a3ijflcjite.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2htmi2YG_lCoYq1hAWJQF_VYhqglicoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976779041331-8cb9me1rin7emes3umjk5a3ijflcjite.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
