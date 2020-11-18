@@ -11,6 +11,7 @@ import { RegisterScreen } from './screens/RegisterScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { Icon } from 'react-native-elements';
 import { OnBoarding } from './components/OnBoarding/onBoarding';
+import { COLORS } from './assets/colors';
 
 const headerStyles = StyleSheet.create({
   header: {
@@ -35,7 +36,7 @@ const AppRouter = () => {
   
               if (route.name === 'Home') {
                 iconName = 'globe';
-              } else if (route.name === 'Profile') {
+              } else if (route.name === 'Session') {
                 iconName = 'user';
               }
   
@@ -43,13 +44,15 @@ const AppRouter = () => {
             },
           })}
           tabBarOptions={{
-            activeTintColor: 'red',
-            inactiveTintColor: 'gray',
-            style: {backgroundColor: '#4c4c4c'}
+            activeTintColor: COLORS.white,
+            inactiveTintColor: COLORS.white,
+            activeBackgroundColor: COLORS.primaryColorDarker,
+            inactiveBackgroundColor: COLORS.secondaryColor,
+            keyboardHidesTabBar: true,
           }}
         >
           <Tab.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
-          <Tab.Screen name='Profile' component={ProfileScreen} options={{ headerShown: false }} />
+          <Tab.Screen name='Session' component={sessionRoute} options={{ headerShown: false }} />
         </Tab.Navigator> 
       // </NavigationContainer>
     )
@@ -60,7 +63,6 @@ const AppRouter = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="OnBoarding">
           <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
-          <Stack.Screen name="Session" component={sessionRoute} options={{ headerShown: false }} />
           <Stack.Screen name="Public" component={publicRoute} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -71,7 +73,7 @@ const AppRouter = () => {
     return (
       // <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name = "Root" component={RootScreen} options={{
+          <Stack.Screen name = "Profile" component={ProfileScreen} options={{
             headerShown: false 
           }} />
 
@@ -86,7 +88,6 @@ const AppRouter = () => {
       // </NavigationContainer>
     )
   }
-
 
   return onBoardingRoute();
 }

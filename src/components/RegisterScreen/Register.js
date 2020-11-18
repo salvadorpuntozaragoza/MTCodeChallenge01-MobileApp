@@ -3,7 +3,9 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon, Input } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../assets/colors';
 import { signUp } from '../../redux/actions';
+import { validateEmail } from '../../utils';
 
 const styles = StyleSheet.create({
   buttonStyle: {
@@ -11,14 +13,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   button: {
-    backgroundColor: 'red'
+    backgroundColor: COLORS.primaryColor
   },
   container: {
     alignSelf: 'stretch',
-    backgroundColor: '#2c2c2c'
+    backgroundColor: COLORS.secondaryColorDarker
   },
   inputStyle: {
-    borderBottomColor: 'red',
+    borderBottomColor: COLORS.primaryColor,
   },
   header: {
     justifyContent: 'center',
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   errorMessage: {
-    color: 'red',
+    color: COLORS.primaryColor,
   }
 });
 
@@ -50,11 +52,6 @@ const Register = ({ navigation }) => {
   const handleFullnameChange = (value) => {
     setFullname(value);
     setInvalidFullname(value.length < 3);
-  }
-
-  function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return regex.test(String(email).toLowerCase());
   }
 
   const handleEmailChange = (value) => {
@@ -96,7 +93,7 @@ const Register = ({ navigation }) => {
         <Icon
           type="font-awesome"
           name="arrow-left"
-          color="white"
+          color={COLORS.white}
           size={20}
           onPress={() => navigation.goBack()}
         />
@@ -107,7 +104,7 @@ const Register = ({ navigation }) => {
         placeholderTextColor='white'
         errorMessage={ invalidFullname ? "This field is required" : "" }
         onChangeText={handleFullnameChange}
-        leftIcon={{ type: 'font-awesome', name: 'user', color: 'white' }}
+        leftIcon={{ type: 'font-awesome', name: 'user', color: COLORS.white }}
         inputContainerStyle={styles.inputStyle}
         inputStyle={{ color: "white" }}
       />
@@ -117,7 +114,7 @@ const Register = ({ navigation }) => {
         errorMessage={ invalidEmail ? "Invalid email" : "" }
         placeholder="Email"
         placeholderTextColor='white'
-        leftIcon={{ type: 'font-awesome', name: 'envelope', color: 'white', size: 16 }}
+        leftIcon={{ type: 'font-awesome', name: 'envelope', color: COLORS.white, size: 16 }}
         inputContainerStyle={styles.inputStyle}
         inputStyle={{ color: "white" }}
       />
@@ -128,7 +125,7 @@ const Register = ({ navigation }) => {
         errorMessage={ invalidPassword ? "Password must be at least 6 characters long" : "" }
         placeholder="Password"
         placeholderTextColor='white'
-        leftIcon={{ type: 'font-awesome', name: 'lock', color: 'white' }}
+        leftIcon={{ type: 'font-awesome', name: 'lock', color: COLORS.white }}
         inputContainerStyle={styles.inputStyle}
         inputStyle={{ color: "white" }}
       />
@@ -139,7 +136,7 @@ const Register = ({ navigation }) => {
         errorMessage={ invalidConfirmPass ? "The password doesn't match" : "" }
         placeholder="Confirm password"
         placeholderTextColor='white'
-        leftIcon={{ type: 'font-awesome', name: 'lock', color: 'white' }}
+        leftIcon={{ type: 'font-awesome', name: 'lock', color: COLORS.white }}
         inputContainerStyle={styles.inputStyle}
         inputStyle={{ color: "white" }}
       />

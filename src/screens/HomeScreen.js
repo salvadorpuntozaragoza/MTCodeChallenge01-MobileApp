@@ -1,20 +1,21 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import { Home } from '../components/HomeScreen/Home';
 import { ContainerView } from '../components/ContainerView/ContainerView';
+import { useDispatch, useSelector } from 'react-redux';
 
-class HomeScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <ContainerView>
-        <Home navigation={this.props.navigation}/>
-      </ContainerView>
-    );
-  }
+const HomeScreen = ({ navigation }) => {
+  const store = useSelector(({ coursesTakenReducer }) => coursesTakenReducer);
+  const dispatch = useDispatch();
+  
+  return (
+    <ContainerView>
+      <Home
+        navigation={navigation}
+        store={store}
+        dispatch={dispatch}
+      />
+    </ContainerView>
+  );
 }
 
 export { HomeScreen };

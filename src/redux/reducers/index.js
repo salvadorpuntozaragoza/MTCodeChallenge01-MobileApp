@@ -4,6 +4,7 @@ import registerReducer from './register';
 import loginReducer from './login';
 import sessionReducer from './session';
 import coursesReducer from './courses'
+import coursesTakenReducer from './courseTaken';
 
 export default combineReducers({
   roomReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   loginReducer,
   sessionReducer,
   coursesReducer,
+  coursesTakenReducer,
 });

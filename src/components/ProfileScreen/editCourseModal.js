@@ -1,39 +1,30 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Modal, TouchableWithoutFeedback, View } from 'react-native';
 import { Input, Icon, Button, Overlay } from 'react-native-elements';
 import {
   heightPercentageToDP as height,
   widthPercentageToDP as width,
 } from 'react-native-responsive-screen';
+import { useDispatch } from 'react-redux';
+import { COLORS } from '../../assets/colors';
+import { deleteCourseTaken, updateCourseTaken } from '../../redux/actions';
+import { HourSelector } from './hoursSelector';
 
 const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
-    width: width(80),
+    width: width(60),
     height: height(5),
-    // backgroundColor: 'blue'
-  },
-  buttonStyle: {
-    borderRadius: 5,
-    width: width(35),
-    // height: height(5),
-  },
-  button: {
-    backgroundColor: 'red'
   },
   container: {
     borderRadius: 10,
     justifyContent: 'center',
-    // alignSelf: 'stretch',
     alignItems: 'center',
-    backgroundColor: '#3c3c3c',
+    backgroundColor: COLORS.secondaryColor,
     width: width(80),
-    height: height(50)
-  },
-  inputStyle: {
-    borderBottomColor: 'red',
+    height: height(40)
   },
   opaqueBackground: {
     alignItems: 'center',
@@ -41,17 +32,48 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  title: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 40,
+    paddingHorizontal: 10,
+    textAlign: "center",
+  }
 });
 
 const EditCourseModal = ({ visible, onClose, item }) => {
-  const [hours, setHours] = useState(item.hours);
+  const [hours, setHours] = useState(0);
+  const dispatch = useDispatch();
 
-  const handleHourChange = (value) => {
-    setHours(Math.round(value));
+  useEffect(() => {
+    console.log("Edit modal mounted");
+    setHours(item.hours);
+
+    return () => {
+      console.log("Edit modal unmounted");
+    }
+  }, [visible]);
+
+  const handleUpdate = () => {
+    console.log("Saved");
+    dispatch(updateCourseTaken({
+      ...item,
+      hours,
+    }));    
   }
 
-  const handleOnPress= () => {
-    console.log('Pressed');
+  const handleDelete = () => {
+    console.log("Deleting");
+    dispatch(deleteCourseTaken({
+      ...item,
+      hours,
+    }))
+  }
+
+  const handleClose = () => {
+    console.log("Saved");
+    onClose();
   }
 
   return (
@@ -61,43 +83,40 @@ const EditCourseModal = ({ visible, onClose, item }) => {
       transparent
       visible={visible}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
+      <TouchableWithoutFeedback>
         <View style={styles.opaqueBackground}>
           <View style={styles.container}>
-            <Text>{item.name}</Text>
-            <Text>{item.course}</Text>
-            <Input
-              keyboardType="decimal-pad"
-              value={String(hours)}
-              onChangeText={handleHourChange}
-              // errorMessage={ invalidEmail ? "Invalid email" : "" }
-              placeholder="Hours in training"
-              placeholderTextColor='white'
-              leftIcon={{ type: 'font-awesome', name: 'hourglass-1', color: 'white', size: 16 }}
-              inputContainerStyle={styles.inputStyle}
-              inputStyle={{ color: "white" }}
+            <Text style={styles.title}>{item.courseName}</Text>
+            <HourSelector 
+              hours={hours}
+              setHours={setHours}
             />
             <View style={styles.buttonContainer}>
               <Icon
                 type="font-awesome"
                 name="times"
-                color="#4c4c4c"
+                color={COLORS.primaryColor}
                 raised
                 reverse
+                onPress={handleClose}
               />
               <Icon
+                disabled={hours === item.hours}
+                disabledStyle={{ backgroundColor: COLORS.secondaryColorDarker }}
                 type="font-awesome"
                 name="save"
-                color="blue"
+                color={COLORS.primaryColor}
                 raised
                 reverse
+                onPress={handleUpdate}
               />
               <Icon
                 type="font-awesome"
                 name="trash"
-                color="red"
+                color={COLORS.primaryColor}
                 raised
                 reverse
+                onPress={handleDelete}
               />
             </View>
           </View>

@@ -4,7 +4,7 @@ const URL = 'http://10.0.2.2:3000/';
 
 async function getAuthorizationToken() {
   const item = await getItem('session');
-  if(item == null) {
+  if(item === null) {
     return item;
   }
   return item.token;
@@ -41,7 +41,7 @@ export const post = async (path, body = {}) => {
   return response;
 }
 
-export const put = async (path, body = {}) => {
+export const patch = async (path, body = {}) => {
   const response = await fetchApi(`${URL}${path}`, 'PATCH', body);
   return response;
 }

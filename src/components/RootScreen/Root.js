@@ -7,13 +7,13 @@ import {
   heightPercentageToDP as height,
   widthPercentageToDP as width,
 } from 'react-native-responsive-screen'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { COLORS } from '../../assets/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: "stretch",
-    backgroundColor: '#2c2c2c',
+    backgroundColor: COLORS.secondaryColorDarker,
   },
   imageContainer: {
     flex: 2,
@@ -34,25 +34,14 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   button: {
-    backgroundColor: 'red'
-  },
-  modalBackground: {
-    alignItems: 'center',
-    backgroundColor: '#151515',
-    height: '100%',
-    justifyContent: 'center',
-    opacity: 0.9,
-    width: '100%',
+    backgroundColor: COLORS.primaryColor
   },
   textStyle: {
     alignSelf: 'center',
-    color: 'white',
+    color: COLORS.white,
     fontSize: 12,
     marginVertical: 10,
   },
-  contentContainer: {
-
-  }
 });
 
 const Root = ({ navigation }) => {

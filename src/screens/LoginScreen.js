@@ -1,19 +1,21 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ContainerView } from '../components/ContainerView/ContainerView';
 import { Login } from '../components/LoginScreen/Login'
 
-class LoginScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <ContainerView>
-        <Login navigation={this.props.navigation}/>
-      </ContainerView>
-    );
-  }
+const LoginScreen = ({ navigation }) => {
+  const store = useSelector(({ loginReducer, sessionReducer }) => ({loginReducer, sessionReducer}));
+  const dispatch = useDispatch();
+  
+  return (
+    <ContainerView>
+      <Login
+        navigation={navigation}
+        store={store}
+        dispatch={dispatch}
+      />
+    </ContainerView>
+  );
 }
 
 export { LoginScreen };

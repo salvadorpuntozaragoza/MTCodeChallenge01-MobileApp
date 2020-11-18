@@ -1,6 +1,7 @@
 import { put } from 'redux-saga/effects'
 import { get } from '../../api';
-import { fetchCoursesFailed, fetchCoursesSuccess } from '../actions';
+import { removeItem } from '../../asyncStoreManager';
+import { fetchCoursesFailed, fetchCoursesSuccess, removeCredentials } from '../actions';
 
 export function* getCourses() {
   try {
@@ -10,6 +11,10 @@ export function* getCourses() {
     if (isValid && success) {
       console.log('Valid courses: ', data);
       yield put(fetchCoursesSuccess(data));
+    } else if (message === "Invalid/Expired token") {
+      console.log("Catched expired token");
+      yield removeItem('session');
+      yield put(removeCredentials())
     } else {
       yield put(fetchCoursesFailed());
     }

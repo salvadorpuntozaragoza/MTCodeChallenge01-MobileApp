@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Icon, Input } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../assets/colors';
 import { logIn, signUp } from '../../redux/actions';
+import { validateEmail } from '../../utils';
 
 const styles = StyleSheet.create({
   buttonStyle: {
@@ -11,14 +13,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   button: {
-    backgroundColor: 'red'
+    backgroundColor: COLORS.primaryColor
   },
   container: {
     alignSelf: 'stretch',
-    backgroundColor: '#2c2c2c'
+    backgroundColor: COLORS.secondaryColorDarker
   },
   inputStyle: {
-    borderBottomColor: 'red',
+    borderBottomColor: COLORS.primaryColor,
   },
   header: {
     justifyContent: 'center',
@@ -30,13 +32,32 @@ const styles = StyleSheet.create({
   errorMessage: {
     marginTop: 15,
     alignSelf: 'center',
-    color: 'red',
+    color: COLORS.primaryColor,
+  },
+  noAccountText: {
+    color: COLORS.white,
+    alignSelf: 'center',
+    fontSize: 18,
+    marginTop: 15,
+  },
+  createAccountText: {
+    color: COLORS.primaryColorDarker,
+    alignSelf: 'center',
+    fontSize: 18,
+    textDecorationLine: "underline",
+    marginTop: 15,
+  },
+  headerTitle: {
+    color: COLORS.white,
+    alignSelf: 'center',
+    fontSize: 25,
+    fontWeight: "bold",
   }
 });
 
-const Login = ({ navigation }) => {
-  const store = useSelector(({ loginReducer, sessionReducer }) => ({loginReducer, sessionReducer}));
-  const dispatch = useDispatch();
+const Login = ({ navigation, store, dispatch }) => {
+  // const store = useSelector(({ loginReducer, sessionReducer }) => ({loginReducer, sessionReducer}));
+  // const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,11 +67,6 @@ const Login = ({ navigation }) => {
 
   console.log("Session reducer: ", store.sessionReducer);
   console.log("Login reducer: ", store.loginReducer);
-
-  function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return regex.test(String(email).toLowerCase());
-  }
 
   const handleEmailChange = (value) => {
     setEmail(value);
@@ -77,16 +93,14 @@ const Login = ({ navigation }) => {
     }));
   }
 
+  const handleCreateAccount = () => {
+    navigation.navigate('Register');
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Icon
-          type="font-awesome"
-          name="arrow-left"
-          color="white"
-          size={20}
-          onPress={() => navigation.goBack()}
-        />
+        <Text style={styles.headerTitle}>Login</Text>
       </View>
 
       <Input
@@ -126,6 +140,13 @@ const Login = ({ navigation }) => {
       <Text style={styles.errorMessage}>
         {store.loginReducer.errorMessage}
       </Text>
+
+      <Text style={styles.noAccountText}>Don't have an account?</Text>
+      
+      <TouchableOpacity onPress={handleCreateAccount}>
+        <Text style={styles.createAccountText}>Create one</Text>
+      </TouchableOpacity>
+
     </ScrollView>
   )
 }

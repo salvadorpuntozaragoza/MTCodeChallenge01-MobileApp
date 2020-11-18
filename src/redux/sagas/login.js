@@ -12,7 +12,7 @@ export function* login({ payload }) {
       yield put(logInSuccess());
       yield put(storeCredentials({ ...data, token }));
       yield saveItem('session', { ...data, token });
-      payload.navigation.navigate("Public");
+      payload.navigation.navigate("Profile");
     } else {
       console.log('Entered fail if with message: ', message);
       yield put(logInFailed(message || ''));

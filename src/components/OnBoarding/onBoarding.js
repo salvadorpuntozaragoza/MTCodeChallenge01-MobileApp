@@ -26,13 +26,11 @@ const OnBoarding = ({ navigation }) => {
     let userData = await getItem('session');
     console.log("User data :", userData);
     if(userData != null) {
-      console.log('User data found');
+      console.log('User data found', userData);
       dispatch(storeCredentials(userData));
-      navigation.navigate('Public');
-      return;
     }
+    navigation.navigate('Public');
     console.log('User data not found');
-    navigation.navigate('Session')
   }
 
   useEffect(() => {

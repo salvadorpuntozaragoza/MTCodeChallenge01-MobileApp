@@ -6,13 +6,13 @@ import { signUpFailed, signUpSuccess, storeCredentials } from '../actions';
 
 export function* signUp({ payload }) {
   try {
-    const response = yield post('users', payload.data);
+    const response = yield post('users/register', payload.data);
     const { data, isValid, message, success, token } = response;
     if (isValid && success) {
       yield put(signUpSuccess());
       yield put(storeCredentials({ ...data, token })); // This goes to session store
       yield saveItem('session', { ...data, token }); // This goes to async storage
-      payload.navigation.navigate("Public");
+      payload.navigation.navigate("Profile");
     } else {
       yield put(signUpFailed(message || ''));
     }

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, TouchableHighlight } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   heightPercentageToDP as height,
   widthPercentageToDP as width,
@@ -9,60 +9,44 @@ import {
 import { AddCourseModal } from './addCourseModal';
 import { EditCourseModal } from './editCourseModal';
 import { removeItem } from '../../asyncStoreManager';
+import { keyExtractor } from '../../utils';
+import { COLORS } from '../../assets/colors';
+import { removeCredentials } from '../../redux/actions';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     alignSelf: "stretch",
-    backgroundColor: '#2c2c2c',
-  },
-  imageContainer: {
-    flex: 2,
-    alignSelf: 'center',
-    height: height(100),
-    width: width(100),
-    backgroundColor: "#AAAAAA"
+    backgroundColor: COLORS.secondaryColorDarker,
   },
   itemContainer: {
     borderRadius: 10,
     flexDirection: 'row',
     width: width(95),
     height: height(10),
-    backgroundColor: 'white',
+    backgroundColor: COLORS.primaryColor,
     marginVertical: 2,
-  },
-  buttonContainer: {
-    alignSelf: 'center',
-    backgroundColor: "#DDBBBB",
-    flex: 1,
-    height: height(30),
-    justifyContent: 'center',
-    paddingHorizontal: width(5),
-    width: width(85),
-  },
-  buttonStyle: {
-    marginBottom: 15,
-    borderRadius: 20
-  },
-  button: {
-    backgroundColor: 'red'
   },
   userIconContainer: {
     borderRadius: 10,
-    marginLeft: 10,
-    width: width(10),
+    // marginLeft: 10,
+    width: "15%",
     justifyContent: 'center',
   },
   userInfoContainer: {
-    flex: 1,
+    // flex: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 6
+    paddingVertical: 6,
+    width: "70%",
   },
   nameStyle: {
     fontSize: 17,
     fontWeight: "bold",
+  },
+  textStyle: {
+    color: COLORS.white
   },
   header: {
     justifyContent: "space-between",
@@ -74,47 +58,48 @@ const styles = StyleSheet.create({
   floatingButton: {
     position: "absolute",
     borderRadius: 30,
-    top: height(82),
-    left: width(85),
+    bottom: 10,
+    right: 10,
     width: 50,
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: COLORS.primaryColor,
     justifyContent: 'center'
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: COLORS.white,
   }
 });
 
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
+  const store = useSelector(({ coursesTakenReducer, sessionReducer }) => ({coursesTakenReducer, sessionReducer}));
   const [addModalIsVisible, setAddModalVisible] = useState(false);
   const [editModalIsVisible, setEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
-  const data = [
-    {
-      name: 'lol',
-      course: 'Basic git concepts - From zero to master in 20 hours',
-      hours: 17,
-    },
-    {
-      name: 'lol',
-      course: 'Basic git concepts - From zero to master in 20 hours',
-      hours: 17,
-    },
-    {
-      name: 'lol',
-      course: 'Basic git concepts - From zero to master in 20 hours',
-      hours: 17,
-    },
-  ]
+
+  const checkCredentials = async () => {
+    if (store.sessionReducer.hasData === false) {
+      navigation.navigate("Login");
+    }
+  }
+
+  useEffect(() => {
+    checkCredentials();
+  }, []);
 
   const handleLogOut = async () => {
     await removeItem('session');
-    navigation.navigate('Session');
+    dispatch(removeCredentials());
+    navigation.navigate('Login');
   }
 
   const Header = () => (
     <View style={styles.header}>
-      <Icon type="font-awesome" name="search" color="white" size={27} />
-      <Icon type="font-awesome" name="power-off" color="white" size={27} onPress={handleLogOut} />
+      <Icon type="font-awesome" name="search" color={COLORS.white} size={27} />
+      <Text style={styles.headerTitle}>My courses</Text>
+      <Icon type="font-awesome" name="power-off" color={COLORS.white} size={27} onPress={handleLogOut} />
     </View>
   )
 
@@ -127,18 +112,19 @@ const Profile = ({ navigation }) => {
     <TouchableHighlight onPress={() => handleTouch(item)}>
       <View style={styles.itemContainer}>
         <View style={styles.userIconContainer}>
-          <Icon name="user" size={30} type="font-awesome" color="red" />
+          <Icon name="user" size={30} type="font-awesome" color={COLORS.white} />
         </View>
         <View style={styles.userInfoContainer}>
-          <Text style={styles.nameStyle} numberOfLines={1}> {item.name} </Text>
-          <Text numberOfLines={1}> {item.course} </Text>
-          <Text> {`Training time: ${item.hours} hours`} </Text>
+          <Text style={[styles.nameStyle, styles.textStyle]} numberOfLines={1}> {item.userName} </Text>
+          <Text style={styles.textStyle} numberOfLines={1}> {item.courseName} </Text>
+          <Text style={styles.textStyle} > {`Training time: ${item.hours} hours`} </Text>
+        </View>
+        <View style={styles.userIconContainer}>
+          <Icon name="edit" size={30} type="font-awesome" color={COLORS.white} />
         </View>
       </View>
     </TouchableHighlight>
   )
-
-  const keyExtractor = (item, index) => String(index)
 
   function goCreateRoom() {
     navigation.navigate('Crear sala');
@@ -148,14 +134,14 @@ const Profile = ({ navigation }) => {
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={Header}
-        data={data}
+        data={store.coursesTakenReducer.coursesTaken.filter((item) => item.userName === store.sessionReducer.sessionData.name)}
         renderItem={renderItems}
         keyExtractor={keyExtractor}
       />
       <AddCourseModal visible={addModalIsVisible} onClose={() => setAddModalVisible(false)} />
       <EditCourseModal item={selectedItem} visible={editModalIsVisible} onClose={() => setEditModalVisible(false)} />
       <View style={styles.floatingButton}>
-        <Icon type="font-awesome" name="plus" color="white" onPress={() => setAddModalVisible(true)} />
+        <Icon type="font-awesome" name="plus" color={COLORS.white} onPress={() => setAddModalVisible(true)} />
       </View>
     </View>
   );
